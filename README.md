@@ -20,7 +20,7 @@
 * **上位机 (PC)**：负责计算密集型的视觉处理任务。通过USB摄像头捕获视频，利用OpenCV进行人脸检测，提取人脸区域送入Keras模型进行情绪分析。最终将计算出的**人脸坐标**和**情绪代码**通过串口发送出去。
 * **下位机 (STM32)**：作为执行终端，负责实时控制。它接收来自上位机的指令，通过PD算法计算舵机运动量，并生成PWM信号驱动云台转动。同时，根据情绪代码驱动OLED显示对应的表情。
 
-![系统总体方案框图](./Docs/images/system_architecture.png)
+![系统总体方案框图](imagine/mermaid-202578 000747.png)
 
 ## 🛠️ 硬件清单 (Hardware Requirements)
 
@@ -35,7 +35,7 @@
 | **电源模块** | 外部5V直流电源                    | 1    | 为整个系统提供稳定供电             |
 | **其他** | 杜邦线、面包板                    | 若干 | 用于连接电路                       |
 
-![系统整体实物连接图](./Docs/images/hardware_setup.jpg)
+![系统整体实物连接图](imagine/7b2037c624b02b61e55e1430ff29315e.jpg)
 
 ## 💻 软件与依赖 (Software & Dependencies)
 
@@ -109,32 +109,23 @@ pip install opencv-python tensorflow pyserial numpy matplotlib pillow
 
 通过上位机记录的数据，可以定量分析系统的追踪性能。
 
-![人脸中心坐标随时间变化图](./Docs/images/trajectory_plot.jpg)
+![人脸中心坐标随时间变化图](imagine/trajectory_plot.png)
 *图注：上图展示了人脸中心坐标(红线/蓝线)随时间的变化。可以看出，系统能快速响应人脸移动，并将坐标稳定在目标值(黑虚线)附近。*
 
-![系统误差响应图](./Docs/images/response_analysis.jpg)
-*图注：误差曲线显示了实际坐标与目标坐标的偏差。误差值大部分时间在0附近小范围波动，证明了PD控制器的有效性。下方的相平面图显示误差轨迹向原点收敛，证明系统稳定。*
+
 
 #### 控制系统特性仿真
 
 为从理论上验证控制策略的有效性，对一个具有相似动态特性的二阶系统模型进行了仿真分析。
 
-![系统单位阶跃响应仿真分析](./Docs/images/step_response_analysis.jpg)
-*图注：系统的单位阶跃响应曲线。系统具有约1.81秒的峰值时间和4.04秒的调节时间，16.3%的最大超调量表明系统是一个典型的欠阻尼系统，是在响应速度和稳定性之间取得的良好平衡。*
 
-![系统抗干扰分析](./Docs/images/disturbance_analysis.jpg)
-*图注：系统对阶跃、正弦、随机噪声以及组合干扰均表现出良好的抑制能力，响应曲线平滑且能快速回归稳态。*
 
 #### 情绪识别性能分析
 
-![情绪识别置信度随时间变化](./Docs/images/confidence_trend.png)
+![情绪识别置信度随时间变化](imagine/confidence_trend.png)
 *图注：模型对情绪识别的置信度随时间波动，反映了模型对不同表情姿态的识别能力差异。*
 
-![测试周期内情绪分布统计](./Docs/images/emotion_distribution.png)
-*图注：在一次测试中，系统主要识别出了“惊讶”和“难过”两种情绪，与测试者的表情基本吻合。*
 
-![情绪变化统计热图](./Docs/images/emotion_heatmap.png)
-*图注：热图直观地展示了在不同时间点识别出的情绪类别及其置信度（颜色深浅）。*
 
 ## 🔮 未来展望 (Future Work)
 
